@@ -36,7 +36,28 @@ InferPlatform 专注于轻眸识刻系统在线侧的业务交互与推理服务
 
 ---
 
-## 二、在线业务数据流与纠偏闭环
+## 二、多端协同矩阵与服务分工
+
+平台面向全域多端提供差异化的服务能力支撑，与各客户端的协同分工如下：
+
+| 客户端名称 | 客户端形态与定位 | InferPlatform 支撑职责 |
+| :--- | :--- | :--- |
+| **WebClient** | 通用 Web 基础端，大创核心验收原型 | 提供单图/多图在线查验 API，输出原图边界框与决策 DTO |
+| **MobileClient** | 移动端扩展方向，具备传感器辅助能力 | 提供高可用 API、幂等支持与离线任务恢复凭据 |
+| **WxClient** | 微信生态免安装入口，面向适老与分享 | 提供轻量化响应，支持大字视图数据抽取与卡片分享数据 |
+
+| 核心能力单元 | 客户端目标职责 | InferPlatform 核心职责 |
+| :--- | :--- | :--- |
+| 图像采集与交互引导 | 客户端负责拍摄与引导 | 不参与客户端交互 |
+| 识别会话与防重放上传 | 携带幂等键发起请求 | 维护生命周期与资产索引 |
+| 视觉检测与文字转录 | 接收 Observation 并呈现 | 内部 Runtime 执行模型推理 |
+| 包装标示状态语义推导 | 接收 Decision 并展示 | 依据法定日期规则计算决策 |
+| 字段级人工纠偏流转 | 提交修正字段与原因 | 即时重算决策并归集待审资产 |
+| 模型激活与版本调度 | 消费在线稳定版本 | 控制 active 指针与安全回滚 |
+
+---
+
+## 三、在线业务数据流与纠偏闭环
 
 ```mermaid
 flowchart TD
@@ -55,7 +76,7 @@ flowchart TD
 
 ---
 
-## 三、核心领域实体与数据模型
+## 四、核心领域实体与数据模型
 
 平台严格采用上位数据契约标准，实现高内聚的数据实体流转：
 
@@ -69,7 +90,7 @@ flowchart TD
 
 ---
 
-## 四、核心 API 契约与演进阶段
+## 五、核心 API 契约与演进阶段
 
 平台对外暴露的端点严格映射 OpenAPI 3.1 契约规范：
 
@@ -83,7 +104,7 @@ flowchart TD
 
 ---
 
-## 五、模型激活与安全回滚机制
+## 六、模型激活与安全回滚机制
 
 模型在在线环境的生效严格受限于跨仓治理链路：
 
@@ -101,7 +122,7 @@ flowchart LR
 
 ---
 
-## 六、提议工程目录结构
+## 七、提议工程目录结构
 
 以下为在线业务平台仓库的建议目录布局，遵循现代后端服务解耦设计：
 
@@ -124,7 +145,7 @@ InferPlatform/                  # 在线业务与推理运行时仓库
 
 ---
 
-## 七、权威依据与参考文档
+## 八、权威依据与参考文档
 
 - **系统设计与规划**：[ProjectPRD/REQUIREMENTS.md](../ProjectPRD/REQUIREMENTS.md) · [ProjectPRD/ARCHITECTURE.md](../ProjectPRD/ARCHITECTURE.md) · [ProjectPRD/ROADMAP.md](../ProjectPRD/ROADMAP.md)
 - **跨仓技术契约**：[contracts/API.md](../ProjectPRD/contracts/API.md) · [contracts/DATA.md](../ProjectPRD/contracts/DATA.md) · [contracts/openapi.json](../ProjectPRD/contracts/openapi.json)
