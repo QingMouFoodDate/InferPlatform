@@ -42,13 +42,15 @@ InferPlatform 承载在线业务交互与推理服务，为 WebClient、MobileCl
 
 平台面向全域多端提供差异化的服务能力支撑：
 
-| 客户端名称 | 客户端形态与定位 | InferPlatform 支撑职责 |
+| 客户端 | 定位 | InferPlatform 支撑职责 |
 | :--- | :--- | :--- |
 | **WebClient** | 通用 Web 基础端，大创核心验收原型 | 提供在线查验 API、原图边界框与决策 DTO |
 | **MobileClient** | 移动端扩展方向，具备传感器辅助能力 | 提供高可用 API、幂等支持与离线任务恢复凭据 |
 | **WxClient** | 微信生态免安装入口，面向适老与分享 | 提供轻量化响应，支持大字视图数据抽取与卡片分享数据 |
 
-| 核心能力单元 | 客户端目标职责 | InferPlatform 核心职责 |
+平台与客户端的各核心能力分工如下：
+
+| 能力 | 客户端目标职责 | InferPlatform 核心职责 |
 | :--- | :--- | :--- |
 | 图像采集与交互引导 | 客户端负责拍摄与引导 | 不参与客户端交互 |
 | 识别会话与防重放上传 | 携带幂等键发起请求 | 维护生命周期与资产索引 |
@@ -56,6 +58,7 @@ InferPlatform 承载在线业务交互与推理服务，为 WebClient、MobileCl
 | 包装标示状态语义推导 | 接收 Decision 并展示 | 依据法定日期规则计算决策 |
 | 字段级人工纠偏流转 | 提交修正字段与原因 | 即时重算决策并归集待审资产 |
 | 模型激活与版本调度 | 消费在线稳定版本 | 控制 active 指针与安全回滚 |
+
 
 ---
 
@@ -145,13 +148,16 @@ InferPlatform/                  # 在线业务与推理运行时仓库
 
 ---
 
-## 八、权威依据与参考文档
+## 八、相关文档
 
-| 规范维度 | 事实源契约 | 核心约束说明 |
-| :--- | :--- | :--- |
-| **系统设计与规划** | [需求规格](../ProjectPRD/需求规格.md) · [系统架构](../ProjectPRD/系统架构.md) · [开发路线](../ProjectPRD/开发路线.md) | 确立系统功能边界、8 仓架构分层与 M0 迭代里程碑 |
-| **跨仓技术契约** | [contracts/API.md](../ProjectPRD/contracts/API.md) · [contracts/DATA.md](../ProjectPRD/contracts/DATA.md) · [openapi.json](../ProjectPRD/contracts/openapi.json) | 统一会话编排、REST 接口端点定义与 Observation/Evidence 数据模型 |
-| **规则与执行契约** | [日期推导规则](../ProjectPRD/contracts/日期推导规则.md) · [contracts/MODEL.md](../ProjectPRD/contracts/MODEL.md) | 包装标示状态法定决策逻辑与标准模型包交付规约 |
+- [需求规格](../ProjectPRD/需求规格.md)
+- [系统架构](../ProjectPRD/系统架构.md)
+- [开发路线](../ProjectPRD/开发路线.md)
+- [API 接口契约](../ProjectPRD/contracts/API.md)
+- [数据模型](../ProjectPRD/contracts/DATA.md)
+- [模型交付规约](../ProjectPRD/contracts/MODEL.md)
+- [日期推导规则](../ProjectPRD/contracts/日期推导规则.md)
+- [工程协作指南](../ProjectPRD/standards/工程协作指南.md)
+- [数据质量规范](../ProjectPRD/standards/数据质量规范.md)
 
-| **工程与质量规范** | [工程协作指南](../ProjectPRD/standards/工程协作指南.md) · [数据质量规范](../ProjectPRD/standards/数据质量规范.md) | 跨仓协作开发规范、分支流转与样本质量红线 |
 
