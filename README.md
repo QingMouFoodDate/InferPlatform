@@ -14,7 +14,7 @@ InferPlatform 承载在线业务交互与推理服务，为 WebClient、MobileCl
 | :--- | :--- |
 | **当前阶段** | 处于架构规范与 M0 核心原型攻坚阶段，优先拉通 Web 单图识别验证主链路 |
 | **实现范围** | M0 阶段聚焦创建会话、单图上传与结果查询三个核心端点；多图聚合比对与纠偏审核流随 C0 演进 |
-| **契约基准** | 通信接口与数据传输模型严格受限于上位 [在线接口契约](../ProjectPRD/contracts/在线接口契约.md)、[核心数据模型](../ProjectPRD/contracts/核心数据模型.md) 与 [openapi.json](../ProjectPRD/contracts/openapi.json) |
+| **契约基准** | 通信接口与数据传输模型严格受限于上位 [contracts/API.md](../ProjectPRD/contracts/API.md)、[contracts/DATA.md](../ProjectPRD/contracts/DATA.md) 与 [openapi.json](../ProjectPRD/contracts/openapi.json) |
 
 ---
 
@@ -150,7 +150,8 @@ InferPlatform/                  # 在线业务与推理运行时仓库
 | 规范维度 | 事实源契约 | 核心约束说明 |
 | :--- | :--- | :--- |
 | **系统设计与规划** | [需求规格](../ProjectPRD/需求规格.md) · [系统架构](../ProjectPRD/系统架构.md) · [开发路线](../ProjectPRD/开发路线.md) | 确立系统功能边界、8 仓架构分层与 M0 迭代里程碑 |
-| **跨仓技术契约** | [在线接口契约](../ProjectPRD/contracts/在线接口契约.md) · [核心数据模型](../ProjectPRD/contracts/核心数据模型.md) · [openapi.json](../ProjectPRD/contracts/openapi.json) | 统一会话编排、REST 接口端点定义与 Observation/Evidence 数据模型 |
-| **规则与执行契约** | [日期推导规则](../ProjectPRD/contracts/日期推导规则.md) · [模型交付规约](../ProjectPRD/contracts/模型交付规约.md) | 包装标示状态法定决策逻辑与标准模型包交付规约 |
+| **跨仓技术契约** | [contracts/API.md](../ProjectPRD/contracts/API.md) · [contracts/DATA.md](../ProjectPRD/contracts/DATA.md) · [openapi.json](../ProjectPRD/contracts/openapi.json) | 统一会话编排、REST 接口端点定义与 Observation/Evidence 数据模型 |
+| **规则与执行契约** | [日期推导规则](../ProjectPRD/contracts/日期推导规则.md) · [contracts/MODEL.md](../ProjectPRD/contracts/MODEL.md) | 包装标示状态法定决策逻辑与标准模型包交付规约 |
+
 | **工程与质量规范** | [工程协作指南](../ProjectPRD/standards/工程协作指南.md) · [数据质量规范](../ProjectPRD/standards/数据质量规范.md) | 跨仓协作开发规范、分支流转与样本质量红线 |
 
