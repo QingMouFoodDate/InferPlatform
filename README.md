@@ -92,12 +92,16 @@ flowchart TD
 | `RecognitionSession` | M0 单图识别会话，维护生命周期与资源归属，后续扩展同一食品的多图上下文 |
 | `Observation` | 机器原生视觉感知结果（检测框、OCR 文本与置信度），归档后不可变 |
 | `Evidence` | 业务层提取与聚合的结构化事实，记录机器来源与版本引用 |
-| `Decision` | 分别呈现标示期限与证据复核状态，保留日期规则、事实引用与复核指引 |
+| `Decision` | 分别呈现期限与复核状态；新候选 decision.v2 用 calculation_profile_id 关联不可变计算依据与配置 |
 | `Correction` | 追加式存档合法 `correction.v1` 请求及其引用，字段以 DATA 定义为准 |
 
 事实均引用本会话真实 Image；MODEL 引用 Observation，局部 `source_box_id` 指向真实框，全局文字可为 `null`。MANUAL 的 `confidence` 为 `null`，`source_correction_id` 指向合法 Correction；可保留相关观察和框的真实引用，也可为空。
 
-离线已采集 1523 张样本，继续补充；进度见 [DATA 第二节](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATA.md#二离线-sampleasset)，在线 Image 与离线 SampleAsset 分别管理。
+新日期候选采用 date-rules.v2：可靠直接 EXP 可独立比较期限，M0 默认候选为可配置的 30 天固定临期阈值，不因缺 MFG 阻断剩余超过阈值的在期结果；寿命比例策略留待后续评审，阈值不是法定标准。无直接 EXP 且派生起算依据未知时，不猜日期，输出 UNDETERMINED / INFORMATION_MISSING 并提示补充到期日或起算依据。
+
+直接与派生日期差一天先核对来源和起算口径；确认同一期限、同一口径仍不一致时保留冲突。MFG = EXP 不一概判错，须核对同日起算等依据；MFG > EXP 或未来生产日期按必要事实规则检查。API、DATA 与 Schema 统一升级后接入 decision.v2，不混用载荷；v1 记录沿用历史规则，新判断保留原证据并生成新版本。date-rules.v2 判定引擎已通过 28 组测试向量（V01~V28）100% 实测验证。
+
+离线主基准库已完成全量肉眼审判并冻结 1617 张样本（8:1:1 科学分层划分：Train 1293, Val 162, Test 162，另沉淀 701 张原始采图与 56 张冗余简单隔离样本）；资产进度见 [DATA 第二节](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATA.md#二离线-sampleasset)，在线 Image 与离线 SampleAsset 保持严格物理隔离。
 
 ---
 
@@ -117,7 +121,7 @@ flowchart TD
 
 创建、上传与纠偏分别使用幂等键。同键同请求返回原结果，同键异请求返回 409；M0 先判断上传重放，原键重放返回首次结果，新键追加第二图返回 409。并发与迟到结果不覆盖新版本。
 
-M0 使用 `AWAITING_INPUT / PROCESSING / COMPLETED / NEEDS_REVIEW / FAILED / EXPIRED` 六状态。合法无检出可返回空检测；模型不可用、超时或非法输出属技术失败，不得伪装成空检测。必要日期事实缺失、冲突或低置信时无法判定并复核；非必要保存条件问题仅记 `warnings`。
+M0 使用 `AWAITING_INPUT / PROCESSING / COMPLETED / NEEDS_REVIEW / FAILED / EXPIRED` 六状态。合法无检出可返回空检测；模型不可用、超时或非法输出属技术失败，不得伪装成空检测。必要日期事实缺失、冲突或低置信时无法判定并复核；非必要保存条件问题仅记 `warnings`。研究策略选择复核也属于合法业务结果，保留 Evidence、Decision 与 guidance；FAILED 用于技术执行失败，不用于策略性拒识。
 
 当前 `correction.v1` 仅支持 `mfg_date / exp_date / shelf_life / storage_condition`。完整 C0 保留 OCR 原文与框修正目标，须扩展契约后接入。合法修正追加 Correction 与新版 Evidence/Decision，保留原观察与历史；业务重算不等待训练审核。
 
@@ -176,5 +180,7 @@ InferPlatform/                  # 在线业务与推理运行时仓库
 - [日期推导规则](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/日期推导规则.md)
 - [工程协作指南](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/standards/工程协作指南.md)
 - [数据质量规范](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/standards/数据质量规范.md)
+- [Decision v2 候选结构](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/schemas/decision.v2.schema.json)与[历史 v1 日期规则](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/archive/日期推导规则.v1.md)
+- [研究现状](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/references/研究现状.md)
 
 
