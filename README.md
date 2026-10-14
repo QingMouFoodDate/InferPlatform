@@ -97,9 +97,9 @@ flowchart TD
 
 事实均引用本会话真实 Image；MODEL 引用 Observation，局部 `source_box_id` 指向真实框，全局文字可为 `null`。MANUAL 的 `confidence` 为 `null`，`source_correction_id` 指向合法 Correction；可保留相关观察和框的真实引用，也可为空。
 
-新日期候选采用 date-rules.v2：可靠直接 EXP 可独立比较期限，M0 默认候选为可配置的 30 天固定临期阈值，不因缺 MFG 阻断剩余超过阈值的在期结果；寿命比例策略留待后续评审，阈值不是法定标准。无直接 EXP 且派生起算依据未知时，不猜日期，输出 UNDETERMINED / INFORMATION_MISSING 并提示补充到期日或起算依据。
+新日期候选采用 date-rules.v2：可靠直接 EXP 可独立比较期限，M0 默认候选为可配置的 30 天固定临期阈值，不因缺 MFG 阻断剩余超过阈值的在期结果；寿命比例策略留待后续评审，阈值不是法定标准。无直接 EXP 且派生起算依据未知时，按双口径包络定理区分非临界安全区保守下界推导与临界跳变窗口阻断。
 
-直接与派生日期差一天先核对来源和起算口径；确认同一期限、同一口径仍不一致时保留冲突。MFG = EXP 不一概判错，须核对同日起算等依据；MFG > EXP 或未来生产日期按必要事实规则检查。API、DATA 与 Schema 统一升级后接入 decision.v2，不混用载荷；v1 记录沿用历史规则，新判断保留原证据并生成新版本。date-rules.v2 判定引擎已通过 28 组测试向量（V01~V28）100% 实测验证。
+直接与派生日期差一天先核对来源和起算口径；确认同一期限、同一口径仍不一致时保留冲突。MFG = EXP 不一概判错，须核对同日起算等依据；MFG > EXP 或未来生产日期按必要事实规则检查。API、DATA 与 Schema 统一升级后接入 decision.v2，不混用载荷；v1 记录沿用历史规则，新判断保留原证据并生成新版本。date-rules.v2 判定引擎已通过 30 组测试向量（V01~V30）100% 实测验证。
 
 离线主基准库已完成全量肉眼审判并冻结 1617 张样本（8:1:1 科学分层划分：Train 1293, Val 162, Test 162，另沉淀 701 张原始采图与 56 张冗余简单隔离样本）；资产进度见 [DATA 第二节](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATA.md#二离线-sampleasset)，在线 Image 与离线 SampleAsset 保持严格物理隔离。
 
@@ -123,7 +123,7 @@ flowchart TD
 
 M0 使用 `AWAITING_INPUT / PROCESSING / COMPLETED / NEEDS_REVIEW / FAILED / EXPIRED` 六状态。合法无检出可返回空检测；模型不可用、超时或非法输出属技术失败，不得伪装成空检测。必要日期事实缺失、冲突或低置信时无法判定并复核；非必要保存条件问题仅记 `warnings`。研究策略选择复核也属于合法业务结果，保留 Evidence、Decision 与 guidance；FAILED 用于技术执行失败，不用于策略性拒识。
 
-当前 `correction.v1` 仅支持 `mfg_date / exp_date / shelf_life / storage_condition`。完整 C0 保留 OCR 原文与框修正目标，须扩展契约后接入。合法修正追加 Correction 与新版 Evidence/Decision，保留原观察与历史；业务重算不等待训练审核。
+当前 `correction.v1` 支持四类语义字段以及 `start_mode` 起算模式纠偏（语义字段写入事实，start_mode 派生新 CalculationProfile 重算 Decision）。完整 C0 保留 OCR 原文与框修正目标，须扩展契约后接入。合法修正追加 Correction 与新版 Evidence/Decision，保留原观察与历史；业务重算不等待训练审核。
 
 ---
 
